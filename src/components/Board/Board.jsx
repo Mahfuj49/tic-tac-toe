@@ -1,21 +1,45 @@
 import React from "react";
+import Classes from "./Board.module.css";
 import Square from "./Square/Square";
 
-function Board(props) {
+function Board({ onClick, squares, winMoves }) {
+  
 
   // functionality for render a Square
+
+
   function renderSquare(i) {
+
+    // if someone wins then highlight those winning moves
+    if (winMoves) {
+      const [a, b, c] = winMoves;
+
+      if(i === a || i === b || i === c) {
+        return (
+          <Square
+            key={`${i}${Math.random()}`} // `${i}${Math.random()}` this is used for giving a unique key to every item in React list
+            value={squares[i]}
+            onClick={() => onClick(i)}
+            className={Classes}
+          />
+        );
+      }
+    }
+    
     // passing the state of each squares which are saved in the Board's main state
     return (
       <Square
         key={`${i}${Math.random()}`} // `${i}${Math.random()}` this is used for giving a unique key to every item in React list
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)}
+        value={squares[i]}
+        onClick={() => onClick(i)}
       />
     );
   }
 
+
   // functionality to render Squares in 3 * 3 tic-tac-toe game
+
+
   let rowMaker = 0; // rowMaker is the index of every Squares in the Board
   let boardRows = [];
 
@@ -41,7 +65,6 @@ function Board(props) {
 
   return (
     <div>
-      <div className="status">{props.status}</div>
       {boardRows}
     </div>
   );
